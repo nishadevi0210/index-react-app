@@ -12,8 +12,13 @@ function App() {
 	function saveNote() {
 		let textArea = document.getElementById("textArea").value;
 		if (textArea !== "") {
-			notesList.push(textArea);
-			createList(notesList);
+			let index = notesList.indexOf(textArea);
+			if (index != -1) {
+				alert("note already exists");
+			} else {
+				notesList.push(textArea);
+				createList(notesList);
+			}	
 		} else { 
 			alert("empty note cannot be saved");
 		}
