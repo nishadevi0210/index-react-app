@@ -2,12 +2,48 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-	let notesList = [];
-	//document.getElementById("textArea").value = "hi";
+	return (
+		<Structure />
+	);	
+}
 
+function Structure () {
+	return (
+		<div className="container pt-3 notepad">
+			<Header />
+			<List />
+			<br />
+			<Text />
+		</div>
+	);
+}
+
+function Header () {
+	return(
+		<div>
+			<header className="bg-success notes-title">
+				<p className="pp"> Notes
+					<span className="badge badge-light" id="badgeCount">0</span>
+				</p>
+			</header>
+		</div>
+	);
+}
+
+function List () {
 	function addNew() {
 		document.getElementById("textArea").value = "";
 	}
+	return(
+			<div className="notes-list">
+				<ul className="list-group" id="list"></ul>
+				<button type="button" className="btn btn-success" id="add" onClick={addNew}>Add new note</button>
+			</div>
+	);
+}
+
+function Text () {
+	let notesList = [];
 
 	function saveNote() {
 		let textArea = document.getElementById("textArea").value;
@@ -30,11 +66,33 @@ function App() {
 		for (let i = 0; i < notesListSize; i++) {
 			let notesName1 = notesList[i];
 			let notesName2 = notesName1.slice(0, 15);
-			text += '<li class="list-group-item-success" id="note'+i+'" noteId="'+i+'">'+ notesName2 +' ....</li>';
+			
+			text += '<li class="list-group-item-success" id="note'+i+'" noteId="'+i+'">'+ notesName2 +' ....\
+			<button type="button" className="btn btn-danger btn-sm btn-del" noteId="'+i+'">Delete</button>\
+			</li>';
 		}
 		document.getElementById("list").innerHTML = text;
 		document.getElementById("badgeCount").innerHTML = notesListSize;
 	}
+
+	return(
+		<div>
+			<div className="notes-text">
+				<textarea name="textarea" placeholder="Write here..." id="textArea"></textarea>
+				<button type="button" className="btn btn-success" id="done" onClick={saveNote}>Done</button>
+			</div>
+		</div>	
+	);
+}
+
+export default App;
+
+	/*function deleteNote() {
+		console.log("chal pda");
+		var num = $(this).attr("noteId");
+				notesList.splice(num, 1);
+				createList(notesList);
+	} 
 
 	function addHover() {
 		console.log("hover is on");
@@ -44,27 +102,7 @@ function App() {
 	function removeHover() {
 		console.log("hover is off");
 		document.getElementById("list").style.color = "#155724";
-	}
-
-	return (
-		<div className="container pt-3 notepad">
-			<header className="bg-success notes-title">
-				<p className="pp"> Notes
-					<span className="badge badge-light" id="badgeCount">0</span>
-				</p>
-			</header>
-			<div className="notes-list">
-				<ul className="list-group" id="list"></ul>
-				<button type="button" className="btn btn-success" id="add" onClick={addNew}>Add new note</button>
-			</div>
-			<br />
-			<div className="notes-text">
-				<textarea name="textarea" placeholder="Write here..." id="textArea"></textarea>
-				<button type="button" className="btn btn-success" id="done" onClick={saveNote}>Done</button>
-			</div>
-		</div>
-	);	
-}
+	}*/
 
 /*function myFunction() {
 	function handleClick(e) {    
@@ -77,5 +115,3 @@ function App() {
 		</button>
 	);
 }*/
-
-export default App;
