@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -7,81 +8,82 @@ function App() {
 	);	
 }
 
-function Structure () {
+const Structure = () => {
 	return (
 		<div className="container pt-3 notepad">
 			<Header />
 			<List />
 			<br />
-			<Text />
 		</div>
 	);
 }
 
-function Header () {
+const Header = () => {
 	return(
 		<div>
 			<header className="bg-success notes-title">
 				<p className="pp"> Notes
-					<span className="badge badge-light" id="badgeCount">0</span>
+					<span className="badge badge-light" id="badgeCount">{}</span>
 				</p>
 			</header>
 		</div>
 	);
 }
 
-function List () {
-	function addNew() {
-		document.getElementById("textArea").value = "";
+const List = () => {
+	//const [state, setstate] = useState({data:""})
+	const [notesList, setList] = React.useState([]);
+	const [textArea, setTextArea] = React.useState("");
+	const addNew = () => {
+		setTextArea("");
 	}
-	return(
-			<div className="notes-list">
-				<ul className="list-group" id="list"></ul>
-				<button type="button" className="btn btn-success" id="add" onClick={addNew}>Add new note</button>
-			</div>
-	);
-}
 
-function Text () {
-	let notesList = [];
+	const changeTextArea = (event) => {
+		setTextArea(event.target.value);
+	}
 
-	function saveNote() {
-		let textArea = document.getElementById("textArea").value;
+	const saveNote = () => {
 		if (textArea !== "") {
 			let index = notesList.indexOf(textArea);
-			if (index != -1) {
+			if (index !== -1) {
 				alert("note already exists");
 			} else {
-				notesList.push(textArea);
-				createList(notesList);
-			}	
+				setList(notesList.concat(textArea));
+				addNew();
+			}
 		} else { 
 			alert("empty note cannot be saved");
 		}
 	}
 
-	function createList(notesList) {
-		let text = "";
-		let notesListSize = notesList.length;
-		for (let i = 0; i < notesListSize; i++) {
-			let notesName1 = notesList[i];
-			let notesName2 = notesName1.slice(0, 15);
-			
-			text += '<li class="list-group-item-success" id="note'+i+'" noteId="'+i+'">'+ notesName2 +' ....\
-			<button type="button" className="btn btn-danger btn-sm btn-del" noteId="'+i+'">Delete</button>\
-			</li>';
-		}
-		document.getElementById("list").innerHTML = text;
-		document.getElementById("badgeCount").innerHTML = notesListSize;
-	}
-
 	return(
+	<div>
+		<div className="notes-list">
+			<ul className="list-group" id="list">
+			{
+				notesList.map((item) => (
+					<ListItem key={item} val={item} />
+				))
+			}
+			</ul>
+			<button type="button" className="btn btn-success" id="add" onClick={addNew}>Add new note</button>
+		</div>
 		<div>
 			<div className="notes-text">
-				<textarea name="textarea" placeholder="Write here..." id="textArea"></textarea>
+				<textarea name="textarea" value={textArea} onChange={changeTextArea} placeholder="Write here..." id="textArea"></textarea>
 				<button type="button" className="btn btn-success" id="done" onClick={saveNote}>Done</button>
 			</div>
-		</div>	
+		</div>
+	</div>
+	);
+}
+
+const ListItem = (props) => {
+	console.log("here", props);
+	return(
+		<li className="list-group-item-success" id="note'+i+'" noteid="'+i+'"> {props.val} ....
+			<button type="button" className="btn btn-danger btn-sm btn-del" noteid="'+i+'">Delete</button>
+		</li>
 	);
 }
 
